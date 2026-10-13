@@ -329,7 +329,6 @@ const NPC_PROMPT = `*[OOC: 잠시 역할극 중단. 새로운 에피소드. 조�
 유효한 JSON 코드블록 하나만 출력한다. 설명·주석은 금지한다. 정보가 없으면 '정보 부족'으로 표기한다. readings는 지표 4개(value 0~100), brain은 생각 6~10개(label은 2~6자 짧은 단어, weight 합계 100, link는 s01~s10)로 구성한다. 각 lead는 1~2문장, items는 3~5개, s09는 1~3개, s10은 본인 1인칭 혼잣말 5개다.
 
 {
-"case":{"no":"01","title":"","date":"YYYY.MM.DD","officer":"분석관","memo":""},
 "subject":{"id":"A","name":"","alias":"","age":"","mbti":"","saju":"","occupation":"","role":"","tags":[],
 "readings":[{"label":"","value":0}],
 "brain":[{"label":"","weight":0,"link":"s01"}],
@@ -352,7 +351,6 @@ const PC_PROMPT = `*[OOC: 잠시 역할극 중단. 새로운 에피소드. 조�
 유효한 JSON 코드블록 하나만 출력한다. 설명·주석은 금지한다. 정보가 없으면 '정보 부족'으로 표기한다. readings는 지표 4개(value 0~100), brain은 생각 6~10개(label은 2~6자 짧은 단어, weight 합계 100, link는 s01~s10)로 구성한다. 각 lead는 1~2문장, items는 3~5개, s09는 1~3개, s10은 본인 1인칭 혼잣말 5개다.
 
 {
-"case":{"no":"01","title":"","date":"YYYY.MM.DD","officer":"분석관","memo":""},
 "subject":{"id":"B","name":"","alias":"","age":"","mbti":"","saju":"","occupation":"","role":"","tags":[],
 "readings":[{"label":"","value":0}],
 "brain":[{"label":"","weight":0,"link":"s01"}],
@@ -379,7 +377,7 @@ const NARRATIVE_PROMPT = `*[OOC: 잠시 역할극 중단. 새로운 에피소드
 "relation":{"status":"","a_to_b":"","b_to_a":"","keywords":[],"timeline":[]}
 }
 
-항목: case.title 두 사람의 관계를 부르는 제목, case.memo 관계 전체에 대한 분석관 메모 1~2문장, relation.status 현재 관계를 한 줄로, relation.a_to_b NPC가 PC를 보는 시선 1~2문장, relation.b_to_a PC가 NPC를 보는 시선 1~2문장, relation.keywords 관계를 나타내는 키워드 3~5개, relation.timeline 지금까지 확인된 핵심 사건 3~6개를 시간순으로 '시점 · 사건' 형식.]`;
+항목: case.title 두 사람을 한 줄로 나타내는 캐치프레이즈, case.memo 관계 전체에 대한 분석관 메모 1~2문장, relation.status 현재 관계를 한 줄로, relation.a_to_b NPC가 PC를 보는 시선 1~2문장, relation.b_to_a PC가 NPC를 보는 시선 1~2문장, relation.keywords 관계를 나타내는 키워드 3~5개, relation.timeline 지금까지 확인된 핵심 사건 3~6개를 시간순으로 '시점 · 사건' 형식.]`;
 
 function buildPrompt(data, mode) {
   if (mode === 'A') return NPC_PROMPT;

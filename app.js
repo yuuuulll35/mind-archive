@@ -224,7 +224,13 @@ function applyAnswers(list) {
       });
       done.add('관계');
     }
-    if (p.case && typeof p.case === 'object') data.case = normalize({ case: p.case }).case;
+    // 표지(제목 캐치프레이즈 · 분석관 메모)는 서사 답변에서만 받는다 — NPC·PC 답변의 case가 덮어쓰지 않도록
+    if (!subs.length && p.case && typeof p.case === 'object') {
+      const c = normalize({ case: p.case }).case;
+      Object.keys(c).forEach((k) => {
+        if (p.case[k] != null) data.case[k] = c[k];
+      });
+    }
   });
   if (!done.size) throw new Error('empty');
   return ['NPC', 'PC', '관계'].filter((x) => done.has(x));
