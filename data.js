@@ -340,10 +340,10 @@ const NPC_PROMPT = `*[OOC: 잠시 역할극 중단. 새로운 에피소드. 조�
 "s06":{"lead":"","items":[]},"s07":{"lead":"","pos":[],"neg":[]},
 "s08":{"lead":"","items":[]},"s09":{"lead":"","items":[]},"s10":{"lead":"","items":[]}
 }},
-"relation":{"status":"","a_to_b":"","b_to_a":"","keywords":[],"timeline":[]}
+"relation":{"status":"","a_to_b":"","b_to_a":"","keywords":[]}
 }
 
-섹션: s01 인물 요약, s02 사고·행동, s03 대인관계, s04 취향, s05 연애관, s06 PC에 대한 생각, s07 관계의 희망과 우려, s08 계획과 욕구, s09 숨기는 생각·감정, s10 잡생각. relation은 NPC 관점에서 PC와의 관계를 기록하며 확인된 사건만 timeline에 작성한다.]`;
+섹션: s01 인물 요약, s02 사고·행동, s03 대인관계, s04 취향, s05 연애관, s06 PC에 대한 생각, s07 관계의 희망과 우려, s08 계획과 욕구, s09 숨기는 생각·감정, s10 잡생각. relation은 NPC 관점에서 PC와의 관계를 기록한다.]`;
 
 const PC_PROMPT = `*[OOC: 잠시 역할극 중단. 새로운 에피소드. 조건 : NPC/PC 기존설정, 관계성, 성격, 성향, 말투, 서사, 캐릭터정보, 유저노트, 로어북 종합참고
 
@@ -363,10 +363,10 @@ const PC_PROMPT = `*[OOC: 잠시 역할극 중단. 새로운 에피소드. 조�
 "s06":{"lead":"","items":[]},"s07":{"lead":"","pos":[],"neg":[]},
 "s08":{"lead":"","items":[]},"s09":{"lead":"","items":[]},"s10":{"lead":"","items":[]}
 }},
-"relation":{"status":"","a_to_b":"","b_to_a":"","keywords":[],"timeline":[]}
+"relation":{"status":"","a_to_b":"","b_to_a":"","keywords":[]}
 }
 
-섹션: s01 인물 요약, s02 사고·행동, s03 대인관계, s04 취향, s05 연애관, s06 NPC에 대한 생각, s07 관계의 희망과 우려, s08 계획과 욕구, s09 숨기는 생각·감정, s10 잡생각. relation은 PC 관점에서 NPC와의 관계를 기록하며 확인된 사건만 timeline에 작성한다.]`;
+섹션: s01 인물 요약, s02 사고·행동, s03 대인관계, s04 취향, s05 연애관, s06 NPC에 대한 생각, s07 관계의 희망과 우려, s08 계획과 욕구, s09 숨기는 생각·감정, s10 잡생각. relation은 PC 관점에서 NPC와의 관계를 기록한다.]`;
 
 const NARRATIVE_PROMPT = `*[OOC: 잠시 역할극 중단. 새로운 에피소드. 조건 : NPC/PC 기존설정, 관계성, 성격, 성향, 말투, 서사, 캐릭터정보, 유저노트, 로어북 종합참고
 

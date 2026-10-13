@@ -217,7 +217,11 @@ function applyAnswers(list) {
       done.add(id === 'A' ? 'NPC' : 'PC');
     });
     if (p.relation && typeof p.relation === 'object') {
-      data.relation = normalize({ relation: p.relation }).relation;
+      // 답변에 들어 있는 칸만 바꾼다 (NPC·PC 답변엔 타임라인이 없으므로 서사에서 받은 타임라인을 지키기 위해)
+      const rel = normalize({ relation: p.relation }).relation;
+      Object.keys(rel).forEach((k) => {
+        if (p.relation[k] != null) data.relation[k] = rel[k];
+      });
       done.add('관계');
     }
     if (p.case && typeof p.case === 'object') data.case = normalize({ case: p.case }).case;
