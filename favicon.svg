@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="12" fill="#1d1c1a"/>
+  <!-- 페이지의 옆얼굴 실루엣(HEAD_PATH)을 축소 -->
+  <path transform="translate(7.4 3.9) scale(.12)" fill="#f5f1e9" d="M300,452 C298,410 304,378 330,350 C368,310 388,252 384,190 C378,96 306,34 214,34 C124,34 62,88 56,164 C54,188 56,204 48,220 C40,234 26,252 30,262 C34,270 46,270 50,278 C47,287 43,292 47,300 C51,306 45,312 49,320 C54,342 72,352 104,354 C132,356 142,374 142,452Z"/>
+  <!-- 머릿속을 가장 많이 차지한 생각 + 작은 생각들 -->
+  <circle cx="34.5" cy="24" r="8" fill="#b0352b"/>
+  <circle cx="23.5" cy="21" r="3.6" fill="none" stroke="#1d1c1a" stroke-width="1.6"/>
+  <circle cx="27" cy="31.5" r="2.8" fill="none" stroke="#1d1c1a" stroke-width="1.6"/>
+  <circle cx="44.5" cy="17" r="2.6" fill="none" stroke="#1d1c1a" stroke-width="1.6"/>
+</svg>
