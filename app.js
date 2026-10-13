@@ -148,13 +148,14 @@ function extractJSON(text) {
 
 /* 붙여넣은 글에 답변이 여러 개(NPC·PC·서사) 있어도 하나씩 떼어 읽는다 */
 function extractAllJSON(text) {
-  // 코드블록 안의 답변은 하나씩 떼고, 코드블록 밖은 "{"로 시작하는 줄에서 나눈다
-  const chunks = [];
+  // 코드블록 안과 밖을 나눈 뒤, 각각에서 맨 바깥 { … } 단위로 답변을 떼어 낸다
+  const parts = [];
   const rest = text.replace(/```[a-z]*\s*([\s\S]*?)(?:```|$)/gi, (m, inner) => {
-    chunks.push(inner);
+    parts.push(inner);
     return '\n';
   });
-  chunks.push(...rest.split(/\n(?=\s*\{\s*(?:\n|"(?:case|subjects?|relation|id)"))/));
+  parts.push(rest);
+  const chunks = parts.flatMap(splitTopLevel);
   const out = [];
   chunks.forEach((c) => {
     try {
@@ -162,6 +163,45 @@ function extractAllJSON(text) {
     } catch (e) {}
   });
   if (!out.length) throw new Error('bad json');
+  return out;
+}
+
+/* 괄호 짝을 세어 맨 바깥 { … } 덩어리를 하나씩 잘라 낸다 (글 안의 괄호는 무시).
+   닫는 괄호가 빠진 답변 뒤에 다른 답변이 붙어 있으면 "} 다음에 바로 {"가 오는 자리에서 끊는다 */
+function splitTopLevel(s) {
+  const out = [];
+  let depth = 0, start = -1, inStr = false, esc = false, last = '';
+  for (let i = 0; i < s.length; i++) {
+    const c = s[i];
+    if (inStr) {
+      if (esc) esc = false;
+      else if (c === '\\') esc = true;
+      else if (c === '"') {
+        // repairJSON과 같은 기준: 뒤에 , } ] : 가 오면 글의 끝
+        let j = i + 1;
+        while (j < s.length && /\s/.test(s[j])) j++;
+        if (j >= s.length || ',}]:'.includes(s[j])) inStr = false;
+      }
+      continue;
+    }
+    if (/\s/.test(c)) continue;
+    if (c === '"') {
+      if (depth > 0) inStr = true;
+    } else if (c === '{') {
+      if (depth > 0 && last === '}') {
+        out.push(s.slice(start, i));
+        depth = 0;
+      }
+      if (depth++ === 0) start = i;
+    } else if (c === '}' && depth > 0) {
+      if (--depth === 0) {
+        out.push(s.slice(start, i + 1));
+        start = -1;
+      }
+    }
+    last = c;
+  }
+  if (depth > 0 && start >= 0) out.push(s.slice(start));
   return out;
 }
 
