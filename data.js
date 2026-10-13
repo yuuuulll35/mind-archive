@@ -366,18 +366,25 @@ const PC_PROMPT = `*[OOC: 잠시 역할극 중단. 새로운 에피소드. 조�
 
 섹션: s01 인물 요약, s02 사고·행동, s03 대인관계, s04 취향, s05 연애관, s06 NPC에 대한 생각, s07 관계의 희망과 우려, s08 계획과 욕구, s09 숨기는 생각·감정, s10 잡생각. relation은 PC 관점에서 NPC와의 관계를 기록한다.]`;
 
-const NARRATIVE_PROMPT = `*[OOC: 잠시 역할극 중단. 새로운 에피소드. 조건 : NPC/PC 기존설정, 관계성, 성격, 성향, 말투, 서사, 캐릭터정보, 유저노트, 로어북 종합참고
-
+const NARRATIVE_PROMPT = `*[OOC: 잠시 역할극 중단. 새로운 에피소드.
+조건 : NPC/PC 기존설정, 관계성, 성격, 성향, 말투, 서사, 캐릭터정보, 유저노트, 로어북 종합참고
 지금까지의 대화를 근거로 NPC(id A)와 PC(id B)의 관계와 서사를 분석한다. 근거 없는 설정이나 사건은 만들지 않는다. 한국어 건조한 기록체로 작성한다.
-
 유효한 JSON 코드블록 하나만 출력한다. 설명·주석은 금지한다. 정보가 없으면 '정보 부족'으로 표기한다.
-
 {
 "case":{"no":"01","title":"","date":"YYYY.MM.DD","officer":"분석관","memo":""},
 "relation":{"status":"","a_to_b":"","b_to_a":"","keywords":[],"timeline":[]}
 }
+항목:
 
-항목: case.title 두 사람을 한 줄로 나타내는 캐치프레이즈, case.memo 관계 전체에 대한 분석관 메모 1~2문장, relation.status 현재 관계를 한 줄로, relation.a_to_b NPC가 PC를 보는 시선 1~2문장, relation.b_to_a PC가 NPC를 보는 시선 1~2문장, relation.keywords 관계를 나타내는 키워드 3~5개, relation.timeline 지금까지 확인된 핵심 사건 3~6개를 시간순으로 '시점 · 사건' 형식.]`;
+* case.title: 두 사람의 관계와 서사를 함축하는 짧은 문학적 캐치프레이즈. 취조실의 서늘한 분위기와 서정성을 담아 수식어와 명사가 결합된 시적 단어형 표현으로 작성한다. 문장형이나 설명문은 피하고, 관계의 핵심 감정과 모순, 여운을 상징적으로 압축한다. 기존 설정과 서사에 어울리는 독창적인 표현을 사용하며 반드시 명사형으로 끝낸다.
+* case.memo: 관계 전체에 대한 분석관 메모 1~2문장.
+* relation.status: 현재 관계를 한 줄로 요약.
+* relation.a_to_b: NPC가 PC를 보는 시선 1~2문장.
+* relation.b_to_a: PC가 NPC를 보는 시선 1~2문장.
+* relation.keywords: 관계를 나타내는 키워드 3~5개.
+* relation.timeline: 지금까지 확인된 핵심 사건 3~6개를 시간순으로 배열한다. 각 항목은 '시점 · 사건' 형식으로 작성한다.
+
+전체 분위기는 감정을 절제한 취조 기록과 문학적인 서정성이 공존하도록 한다. 캐치프레이즈에만 문학적 표현을 적극적으로 허용하며, 나머지 분석 항목은 명료하고 객관적으로 작성한다.]*`;
 
 function buildPrompt(data, mode) {
   if (mode === 'A') return NPC_PROMPT;
