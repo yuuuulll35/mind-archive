@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MIND ARCHIVE · 뇌구조 열람실</title>
+<meta name="description" content="AI 채팅 OOC 데이터로 두 사람의 뇌구조를 취조 파일처럼 열람하는 정적 페이지">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=Nanum+Myeongjo:wght@400;700;800&family=Nanum+Pen+Script&display=swap" rel="stylesheet" crossorigin="anonymous">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ───────── TOOLBAR ───────── -->
+<header class="toolbar" data-noprint>
+  <div class="tb-brand">
+    <span class="tb-dot"></span>
+    <b>MIND ARCHIVE</b><span class="tb-sub">뇌구조 열람실</span>
+  </div>
+  <nav class="tb-actions">
+    <button class="btn btn-ink" id="btnEdit" type="button"><span class="ico">✎</span><span class="lbl">편집 모드</span></button>
+    <button class="btn" id="btnPrompt" type="button">OOC 프롬프트</button>
+    <button class="btn" id="btnImport" type="button">OOC 답변 넣기</button>
+    <div class="dd">
+      <button class="btn" id="btnMore" type="button">내보내기 ▾</button>
+      <div class="dd-menu" id="moreMenu" hidden>
+        <button type="button" data-act="export">백업 파일 저장</button>
+        <button type="button" data-act="copy">백업 내용 복사</button>
+        <button type="button" data-act="png">현재 화면 이미지 저장</button>
+        <button type="button" data-act="expand">모든 파일 펼치기 / 접기</button>
+        <hr>
+        <button type="button" data-act="sample">샘플 데이터로 되돌리기</button>
+        <button type="button" data-act="blank">빈 파일로 새로 시작</button>
+      </div>
+    </div>
+    <button class="btn" id="btnHelp" type="button">도움말</button>
+  </nav>
+</header>
+
+<main id="sheet" class="sheet">
+  <!-- CASE COVER -->
+  <section class="cover" id="cover"></section>
+
+  <!-- SUBJECT SWITCH -->
+  <nav class="switch" id="switch"></nav>
+
+  <!-- VIEW -->
+  <section id="view"></section>
+
+  <footer class="foot">
+    <span class="mono">@gimyunseul92364</span>
+  </footer>
+</main>
+
+<!-- IMPORT DIALOG -->
+<dialog id="dlgImport" class="dlg">
+  <form method="dialog" class="dlg-inner">
+    <div class="dlg-head"><span class="mono">EVIDENCE INTAKE</span><b>OOC 답변 넣기</b></div>
+    <p class="dlg-note">AI가 보낸 OOC 답변을 통째로 복사해서 붙여넣으세요. NPC·PC·서사 답변을 한꺼번에 붙여넣어도 됩니다.</p>
+    <textarea id="importText" spellcheck="false" placeholder="여기에 AI 답변 붙여넣기"></textarea>
+    <p class="dlg-err" id="importErr"></p>
+    <div class="dlg-foot">
+      <button class="btn" value="cancel" type="submit">닫기</button>
+      <button class="btn btn-ink" id="importGo" type="button">넣기</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- PROMPT DIALOG -->
+<dialog id="dlgPrompt" class="dlg dlg-wide">
+  <form method="dialog" class="dlg-inner">
+    <div class="dlg-head"><span class="mono">REQUEST FORM</span><b>OOC 분석 요청 프롬프트</b></div>
+    <p class="dlg-note">아래 내용을 복사해 AI 채팅에 보내고, 받은 답변을 'OOC 답변 넣기'에 붙여넣으세요.</p>
+    <div class="dlg-row">
+      <label class="radio"><input type="radio" name="pmode" value="A" checked> NPC</label>
+      <label class="radio"><input type="radio" name="pmode" value="B"> PC</label>
+      <label class="radio"><input type="radio" name="pmode" value="both"> 서사</label>
+    </div>
+    <textarea id="promptText" readonly spellcheck="false"></textarea>
+    <p class="dlg-count mono" id="promptCount"></p>
+    <div class="dlg-foot">
+      <button class="btn" value="cancel" type="submit">닫기</button>
+      <button class="btn btn-ink" id="promptCopy" type="button">프롬프트 복사</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- FILE POPUP -->
+<dialog id="dlgFile" class="filedlg" aria-labelledby="fdTitle">
+  <div id="fileCard"></div>
+</dialog>
+
+<!-- CONFIRM DIALOG -->
+<dialog id="dlgAsk" class="dlg">
+  <form method="dialog" class="dlg-inner">
+    <div class="dlg-head"><span class="mono">CONFIRM</span><b>확인</b></div>
+    <p class="dlg-note" id="askText"></p>
+    <div class="dlg-foot">
+      <button class="btn" value="no" type="submit">취소</button>
+      <button class="btn btn-ink" value="yes" type="submit" id="askYes">진행</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- PHOTO EDITOR -->
+<dialog id="dlgCrop" class="dlg dlg-crop">
+  <form method="dialog" class="dlg-inner">
+    <div class="dlg-head"><span class="mono">PHOTO DESK</span><b>사진 편집</b></div>
+    <p class="dlg-note">드래그하면 위치가, 슬라이더나 마우스 휠로 크기가 조정됩니다. 밝은 틀 안이 신상 카드 사진으로 잘려 나옵니다.</p>
+    <div class="crop-stage" id="cropStage"><canvas id="cropCanvas" width="560" height="680"></canvas></div>
+    <label class="crop-zoom mono">확대 <input type="range" id="cropZoom" min="1" max="3" step="0.01" value="1"><output id="cropZoomOut">100%</output></label>
+    <div class="dlg-foot">
+      <button class="btn" type="button" id="cropSwap">다른 사진</button>
+      <button class="btn" type="button" id="cropReset">초기화</button>
+      <span class="crop-sp"></span>
+      <button class="btn" value="cancel" type="submit">취소</button>
+      <button class="btn btn-ink" type="button" id="cropApply">적용</button>
+    </div>
+  </form>
+</dialog>
+
+<input type="file" id="photoInput" accept="image/*" hidden>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- 사용법 안내 -->
+<div id="tour" role="dialog" aria-label="사용법 안내" hidden>
+  <p id="tourText"></p>
+  <div class="tour-row">
+    <span id="tourStep" class="mono"></span>
+    <button type="button" class="btn" id="tourSkip">건너뛰기</button>
+    <button type="button" class="btn" id="tourPrev">이전</button>
+    <button type="button" class="btn btn-tour" id="tourNext">다음</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/modern-screenshot@4.6.8/dist/index.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
